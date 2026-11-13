@@ -28,8 +28,10 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Android platform 36
-        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Android SDK environment
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          flutter doctor -v
 
       - name: Generate Android project, configure notifications, get packages
         run: python3 tool/bootstrap.py
