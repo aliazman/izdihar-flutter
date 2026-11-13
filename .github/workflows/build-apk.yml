@@ -3,7 +3,7 @@ name: Build Izdihar Android APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, master]
 
 permissions:
   contents: read
@@ -13,29 +13,37 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
-      - name: Checkout source
+      - name: Get app source
         uses: actions/checkout@v4
-      - name: Java 17
+
+      - name: Java 17 for Android Gradle
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
-      - name: Configure Android SDK
+
+      - name: Android SDK
         uses: android-actions/setup-android@v3
-      - name: Install Android platform
+
+      - name: Android platform 36
         run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
-      - name: Create native runners and resolve packages
+
+      - name: Generate Android project, configure notifications, get packages
         run: python3 tool/bootstrap.py
-      - name: Validate content
+
+      - name: Validate authored session content
         run: flutter test
-      - name: Build APK
+
+      - name: Build installable Android APK
         run: flutter build apk --release
-      - name: Upload APK
+
+      - name: Make APK available for download
         uses: actions/upload-artifact@v4
         with:
           name: Izdihar-Android-APK
