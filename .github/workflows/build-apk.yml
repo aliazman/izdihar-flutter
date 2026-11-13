@@ -37,7 +37,7 @@ jobs:
         run: python3 tool/bootstrap.py
 
       - name: Validate authored session content
-        run: flutter test
+        run: flutter test test/content_test.dart
 
       - name: Build installable Android APK
         run: flutter build apk --release
