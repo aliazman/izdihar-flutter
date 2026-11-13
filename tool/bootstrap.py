@@ -64,14 +64,11 @@ if build.exists():
 settings = root / 'android/settings.gradle.kts'
 if settings.exists():
     s = settings.read_text(encoding='utf-8')
-    s = re.sub(r'(id\("com\.android\.application"\)\s+version\s+")[^"]+("\s+apply\s+false)',
-               r'\g<1>8.11.1\2', s)
     settings.write_text(s, encoding='utf-8')
 
 wrapper = root / 'android/gradle/wrapper/gradle-wrapper.properties'
 if wrapper.exists():
     s = wrapper.read_text(encoding='utf-8')
-    s = re.sub(r'gradle-[\d.]+-(?:all|bin)\.zip', 'gradle-8.13-all.zip', s)
     wrapper.write_text(s, encoding='utf-8')
 
 # iOS supports >= 13.0 for this dependency set.
